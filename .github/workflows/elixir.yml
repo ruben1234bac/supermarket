@@ -39,7 +39,7 @@ jobs:
       run: MIX_ENV=test mix compile --warnings-as-errors
     - name: Run Credo in strict mode
       run: mix credo --strict
-    - name: Run tests with 20% coverage check
-      run: mix coveralls.github --min-coverage=20
+    - name: Run tests with 100% coverage check
+      run: MIX_ENV=test mix coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
