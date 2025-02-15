@@ -48,6 +48,34 @@ defmodule Supermarket.Helpers.EtsHelper do
     end
   end
 
+  @doc """
+  `item_exist?/2` receives the name of the table as the first parameter, just like other functions. If no table with this name exists, the table will be created.
+  The second parameter is the code or key of the item. If the item is found, the `:ok` tuple is returned, otherwise an error tuple is returned.
+
+  ```elixir
+    iex> alias Supermarket.Helpers.EtsHelper
+
+    iex> EtsHelper.item_exist?(:test, "1")
+    {:ok, %{code: "1"}}
+
+    iex> EtsHelper.item_exist?(:test, "1")
+    {:error, "Item does not exist."}
+  ```
+  """
+  @spec item_exist?(atom() | :ets.tid(), binary()) ::
+          {:error, binary()} | {:ok, map() | struct()}
+  def item_exist?(table_name, code) do
+    result =
+      table_name
+      |> validate_table
+      |> :ets.lookup(code)
+
+    case result do
+      [] -> {:error, "Item does not exist."}
+      [{_key, item}] -> {:ok, item}
+    end
+  end
+
   defp clean_items(item_list) do
     Enum.map(item_list, &Kernel.elem(&1, 1))
   end

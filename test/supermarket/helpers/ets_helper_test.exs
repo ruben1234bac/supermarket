@@ -64,4 +64,20 @@ defmodule Supermarket.Helpers.EtsHelperTest do
                EtsHelper.add_items(table_name, [%{name: "test"}])
     end
   end
+
+  describe "item_exist?/2" do
+    test "Should return a tuple with :ok and item", %{
+      table_name: table_name
+    } do
+      items = [%{code: "1"}, %{code: "2"}]
+      assert {:ok, items} == EtsHelper.add_items(table_name, items)
+      assert {:ok, hd(items)} == EtsHelper.item_exist?(table_name, "1")
+    end
+
+    test "Should return a tuple with :error and message", %{
+      table_name: table_name
+    } do
+      assert {:error, "Item does not exist."} == EtsHelper.item_exist?(table_name, "1")
+    end
+  end
 end
