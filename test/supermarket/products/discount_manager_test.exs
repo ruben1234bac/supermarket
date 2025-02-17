@@ -81,4 +81,27 @@ defmodule Supermarket.Products.DiscountManagerTest do
                DiscountManager.create_product_discount("GR1", "TEST")
     end
   end
+
+  describe "get_discount_by_product/1" do
+    setup do
+      Supermarket.Seeds.init()
+    end
+
+    test "Should return a discount related with some product" do
+      assert %Discount{
+               code: "2X1",
+               created_by: "CEO",
+               fixed_price: nil,
+               is_active: nil,
+               is_automatic: nil,
+               name: "Buy one get one free",
+               type: :buy_one_get_one_free,
+               use_fixed_price: false
+             } == DiscountManager.get_discount_by_product("GR1")
+    end
+
+    test "Should return nil" do
+      assert DiscountManager.get_discount_by_product("GR11") == nil
+    end
+  end
 end

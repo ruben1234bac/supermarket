@@ -46,7 +46,7 @@ defmodule Supermarket.Products.DiscountManager do
     ```elixir
       iex> alias Supermarket.Products.DiscountManager
 
-      iex> DiscountManager.create(%Supermarket.Products.Discount{code: "123", name: "test"})
+      iex> DiscountManager.create(%{code: "123", name: "test"})
       {:ok,
         [
           %Supermarket.Products.Discount{
@@ -131,6 +131,50 @@ defmodule Supermarket.Products.DiscountManager do
       }
       |> ProductDiscount.fill()
       |> then(&EtsHelper.add_items(@table_name_relation, [&1]))
+    end
+  end
+
+  @doc """
+    Try to get a discount related with some product by product_code, if does not exist the relation return nil
+
+    ```elixir
+      iex> alias Supermarket.Products.DiscountManager
+
+      iex> DiscountManager.get_discount_by_product("GR1")
+      nil
+
+      iex> DiscountManager.get_discount_by_product("GR1")
+      %Supermarket.Products.Discount{
+        code: "2X1",
+        name: "Buy one get one free",
+        created_by: "CEO",
+        type: :buy_one_get_one_free,
+        use_fixed_price: false,
+        fixed_price: 0,
+        is_active: true,
+        is_automatic: false
+      }
+    ```
+  """
+  @spec get_discount_by_product(binary()) :: nil | Discount.t()
+  def get_discount_by_product(product_code) do
+    match_spec = [
+      {{:"$1", :"$2"}, [{:"=:=", {:map_get, :product_code, :"$2"}, product_code}], [:"$_"]}
+    ]
+
+    case EtsHelper.search_item(@table_name_relation, match_spec) do
+      [] ->
+        nil
+
+      [product_discount] ->
+        match_spec_discount = [
+          {{:"$1", :"$2"}, [{:"=:=", {:map_get, :code, :"$2"}, product_discount.discount_code}],
+           [:"$_"]}
+        ]
+
+        @table_name
+        |> EtsHelper.search_item(match_spec_discount)
+        |> hd()
     end
   end
 end
