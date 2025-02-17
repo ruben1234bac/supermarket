@@ -7,7 +7,7 @@ defmodule Supermarket.Orders.Cart do
   @type t() :: %__MODULE__{
           code: binary(),
           products: list(binary()),
-          total: 0
+          total: float()
         }
 
   defstruct code: nil,

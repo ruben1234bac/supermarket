@@ -54,7 +54,8 @@ defmodule Supermarket.Orders.CartManager do
       end
 
     {products, total} = DiscountHelper.build_products(cart.products)
-    %{cart | products: products, total: total}
+
+    %Cart{cart | products: products, total: total}
   end
 
   defp create(params) do
