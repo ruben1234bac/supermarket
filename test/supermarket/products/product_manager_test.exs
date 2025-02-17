@@ -33,4 +33,15 @@ defmodule Supermarket.Products.ProductManagerTest do
       assert products == ProductManager.get_all()
     end
   end
+
+  describe "exist?/1" do
+    test "Should return a :ok tuple when the item exist", %{products: products} do
+      product = hd(products)
+      assert {:ok, product} == ProductManager.exist?(product.code)
+    end
+
+    test "Should return a :error tuple when item does not exist" do
+      assert {:error, "Item does not exist."} == ProductManager.exist?("TEST")
+    end
+  end
 end
