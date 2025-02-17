@@ -17,7 +17,7 @@ defmodule SupermarketWeb.Router do
   scope "/", SupermarketWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", Products.Index, :index
   end
 
   # Other scopes may use custom stacks.

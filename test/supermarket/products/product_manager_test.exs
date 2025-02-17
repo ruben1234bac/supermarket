@@ -11,17 +11,20 @@ defmodule Supermarket.Products.ProductManagerTest do
       %Product{
         code: "GR1",
         name: "Green tea",
-        price: 3.11
+        price: 3.11,
+        image: "/images/green_tea.jpg"
       },
       %Product{
         code: "SR1",
         name: "Strawberries",
-        price: 5.00
+        price: 5.00,
+        image: "/images/strawberries.jpg"
       },
       %Product{
         code: "CF1",
         name: "Coffee",
-        price: 11.23
+        price: 11.23,
+        image: "/images/coffee.webp"
       }
     ]
 

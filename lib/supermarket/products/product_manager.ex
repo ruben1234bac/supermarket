@@ -77,19 +77,19 @@ defmodule Supermarket.Products.ProductManager do
         code: "GR1",
         name: "Green tea",
         price: 3.11,
-        image: ""
+        image: "/images/green_tea.jpg"
       },
       %Product{
         code: "SR1",
         name: "Strawberries",
         price: 5.00,
-        image: ""
+        image: "/images/strawberries.jpg"
       },
       %Product{
         code: "CF1",
         name: "Coffee",
         price: 11.23,
-        image: ""
+        image: "/images/coffee.webp"
       }
     ]
   end

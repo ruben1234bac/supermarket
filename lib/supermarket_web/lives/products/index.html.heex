@@ -1,0 +1,112 @@
+<div class="bg-indigo-50 w-full h-screen grid grid-cols-1 md:grid-cols-12 gap-4">
+  <div class="md:col-span-10 md:px-0 md:col-start-2 h-screen">
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mt-10">
+      <div class="md:col-span-4 rounded-lg p-4 ">
+        <label class="text-2xl font-bold text-slate-600">Products</label>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <%= for product <- @products do %>
+            <div class="p-4 rounded-lg border border-slate-100 bg-white shadow">
+              <div class="h-44">
+                <img src={product.image} class="object-cover h-44 w-full rounded-lg">
+              </div>
+              <div class="mt-2">
+                <label class="block text-sm font-bold text-slate-400">
+                  <%= product.code %>
+                </label>
+                <label class="block text-slate-600">
+                  <%= product.name %>
+                </label>
+                <div class="grid grid-cols-3 gap-4 mt-10">
+                  <div class="h-full inline-flex items-center">
+                    <label class="text-sm font-bold text-indigo-700">£<%= product.price %></label>
+                  </div>
+                  <div class="col-span-2">
+                    <button phx-click="add_product" phx-value-code={product.code}
+                      class="w-full py-2 rounded-lg bg-indigo-900 text-white font-bold text-sm">
+                      Add cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% end %>
+        </div>
+      </div>
+      <div class="md:col-span-2 bg-indigo-800 rounded-lg p-4 border-2 border-slate-200 flex flex-col">
+        <%= if !is_nil(@cart_code) do %>
+          <label class="block text-2xl text-white font-bold">Summary</label>
+          <div>
+            <%= for cart_product <- @cart.products do %>
+              <div class="p-2 border-b border-indigo-100">
+                <div class="w-full inline-flex items-center">
+                  <div>
+                    <label class="text-indigo-100 font-bold">
+                      <%= cart_product.product.code %>
+                    </label>
+                    <label class="text-indigo-200">
+                      <%= cart_product.product.name %>
+                    </label>
+                  </div>
+                  <div class="ml-auto">
+                    <label class="text-white font-bold">
+                      <%= cart_product.quantity %>
+                    </label>
+                  </div>
+                </div>
+                <div class="w-full inline-flex items-center">
+                  <label class="text-indigo-200 font-bold">
+                    £<%= cart_product.product.price %>
+                  </label>
+                  <label class="text-indigo-100 ml-auto">
+                    £<%= cart_product.total %>
+                  </label>
+                </div>
+                <%= if !is_nil(cart_product.discount) do %>
+                  <div class="w-full inline-flex items-center">
+                    <label class="px-2 py-1 text-xs font-bold bg-rose-700 text-white rounded-full ml-auto">
+                      <%= cart_product.discount.name %>
+                    </label>
+                  </div>
+                  <% end %>
+              </div>
+              <% end %>
+          </div>
+          <div class="w-full inline-flex items-center mt-auto p-3">
+            <label class="text-lg font-semibold text-indigo-200">Total</label>
+            <label class="text-lg font-bold text-white ml-2">£<%= @cart.total %></label>
+          </div>
+          <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= if is_nil(@cart_code) do %>
+  <div class="w-full h-screen top-0 left-0 bg-white/30 backdrop-blur-sm fixed inline-flex items-center z-50 py-4">
+    <div class="w-11/12 md:w-1/2 mx-auto">
+      <div class="w-full bg-white shadow-lg rounded-lg ">
+
+        <form phx-change="update_form" phx-submit="save_form" class="p-4">
+          <label class="text-slate-700 font-semibold block text-2xl">
+            Please, enter your name
+          </label>
+          <label class="block text-slate-600">This name help us to remember your cart and continue with your
+            order</label>
+          <div class="w-full mt-4 relative">
+            <label class="text-sm font-bold text-slate-500 block">Name</label>
+            <input name="cart_code" maxlength="50" class="p-2 rounded-lg border border-slate-300 w-full">
+            <%= if @error_cart_code do %>
+              <label class="text-red-600 font-bold text-sm absolute bottom-0 left-0 -mb-5">Please add name</label>
+              <% end %>
+          </div>
+          <div class="w-full flex mt-6">
+            <button class="mx-auto px-10 py-2 rounded-lg bg-indigo-900 text-white font-bold text-sm">
+              Save name
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <% end %>

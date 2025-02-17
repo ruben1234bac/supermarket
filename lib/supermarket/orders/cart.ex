@@ -6,12 +6,14 @@ defmodule Supermarket.Orders.Cart do
 
   @type t() :: %__MODULE__{
           code: binary(),
-          products: list(binary()),
+          products: list(),
+          product_codes: list(binary()),
           total: float()
         }
 
   defstruct code: nil,
             products: [],
+            product_codes: [],
             total: 0
 
   @doc """
@@ -24,6 +26,7 @@ defmodule Supermarket.Orders.Cart do
       %Supermarket.Orders.Cart{
         code: "123",
         products: [],
+        product_codes: [],
         total: 0
       }
     ```
