@@ -80,4 +80,28 @@ defmodule Supermarket.Helpers.EtsHelperTest do
       assert {:error, "Item does not exist."} == EtsHelper.item_exist?(table_name, "1")
     end
   end
+
+  describe "search_item/2" do
+    setup do
+      match_spec = [{{:"$1", :"$2"}, [{:"=:=", {:map_get, :code, :"$2"}, "123"}], [:"$_"]}]
+      %{match_spec: match_spec}
+    end
+
+    test "Should return an empty list of items", %{
+      table_name: table_name,
+      match_spec: match_spec
+    } do
+      assert [] == EtsHelper.search_item(table_name, match_spec)
+    end
+
+    test "Should return a list of items", %{
+      table_name: table_name,
+      match_spec: match_spec
+    } do
+      items = [%{code: "AAA"}, %{code: "123"}]
+      assert {:ok, items} == EtsHelper.add_items(table_name, items)
+
+      assert [%{code: "123"}] == EtsHelper.search_item(table_name, match_spec)
+    end
+  end
 end

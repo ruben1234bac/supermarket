@@ -76,6 +76,26 @@ defmodule Supermarket.Helpers.EtsHelper do
     end
   end
 
+  @doc """
+  Obtain a list of map or struct that is storage in the `:ets` with the table name as atom.
+  If no table with this name exists, this table will be created.
+
+  ```elixir
+    iex> alias Supermarket.Helpers.EtsHelper
+    iex> match_spec = [{{:"$1", :"$2"}, [{:"=:=", {:map_get, :code, :"$2"}, "123"}], [:"$_"]}]
+    [{{:"$1", :"$2"}, [{:"=:=", {:map_get, :code, :"$2"}, "123"}], [:"$_"]}]
+    iex> EtsHelper.search_item(:table_name, match_spec)
+    []
+  ```
+  """
+  @spec search_item(atom() | :ets.tid(), list()) :: list()
+  def search_item(table_name, match_spec) do
+    table_name
+    |> validate_table
+    |> :ets.select(match_spec)
+    |> clean_items
+  end
+
   defp clean_items(item_list) do
     Enum.map(item_list, &Kernel.elem(&1, 1))
   end
