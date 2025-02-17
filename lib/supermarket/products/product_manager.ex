@@ -42,6 +42,35 @@ defmodule Supermarket.Products.ProductManager do
     get_product_list()
   end
 
+  @doc """
+    Validate if exist someone `Product` with a specific `code`.
+
+    ```elixir
+      iex> alias Supermarket.Products.ProductManager
+
+      iex> ProductManager.exist?("GR1")
+      {:ok,
+        %Supermarket.Products.Product{
+          code: "GR1",
+          name: "Green tea",
+          price: 3.11,
+          is_active: true,
+          image: ""
+        }
+      }
+
+      iex> DiscountManager.exist?("1234")
+      {:error, "Item does not exist."}
+    ```
+  """
+  @spec exist?(binary()) :: {:ok, Discount.t()} | {:error, boolean()}
+  def exist?(code) do
+    case Enum.find(get_product_list(), &(&1.code == code)) do
+      nil -> {:error, "Item does not exist."}
+      item -> {:ok, item}
+    end
+  end
+
   defp get_product_list do
     [
       %Product{
