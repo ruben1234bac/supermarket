@@ -19,6 +19,10 @@ defmodule Supermarket.Application do
       SupermarketWeb.Endpoint
     ]
 
+    if Mix.env() != :test do
+      Supermarket.Seeds.init()
+    end
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Supermarket.Supervisor]
