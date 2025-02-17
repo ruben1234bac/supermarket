@@ -63,7 +63,7 @@ defmodule Supermarket.Products.ProductManager do
       {:error, "Item does not exist."}
     ```
   """
-  @spec exist?(binary()) :: {:ok, Discount.t()} | {:error, boolean()}
+  @spec exist?(binary()) :: {:ok, Product.t()} | {:error, boolean()}
   def exist?(code) do
     case Enum.find(get_product_list(), &(&1.code == code)) do
       nil -> {:error, "Item does not exist."}
