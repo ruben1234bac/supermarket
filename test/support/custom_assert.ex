@@ -68,6 +68,13 @@ defmodule CustomAssert do
 
   defp normalize(_data), do: []
 
+  defp normalize_value(map) when is_struct(map) do
+    map
+    |> Map.from_struct()
+    |> Enum.sort()
+    |> Enum.into(%{})
+  end
+
   defp normalize_value(map) when is_map(map) do
     map
     |> Enum.sort()
