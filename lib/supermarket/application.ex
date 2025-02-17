@@ -19,9 +19,7 @@ defmodule Supermarket.Application do
       SupermarketWeb.Endpoint
     ]
 
-    if Mix.env() != :test do
-      Supermarket.Seeds.init()
-    end
+    seeds()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -35,5 +33,11 @@ defmodule Supermarket.Application do
   def config_change(changed, _new, removed) do
     SupermarketWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  def seeds do
+    if Application.get_env(:supermarket, :env) != :test do
+      Supermarket.Seeds.init()
+    end
   end
 end
