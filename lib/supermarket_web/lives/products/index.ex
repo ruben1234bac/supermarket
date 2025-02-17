@@ -1,9 +1,11 @@
 defmodule SupermarketWeb.Products.Index do
-  # In a typical Phoenix app, the following line would usually be `use MyAppWeb, :live_view`
+  @moduledoc """
+  Index liveview to work with products
+  """
   use Phoenix.LiveView
 
-  alias Supermarket.Products.ProductManager
   alias Supermarket.Orders.CartManager
+  alias Supermarket.Products.ProductManager
 
   def mount(_params, _session, socket) do
     {:ok,
